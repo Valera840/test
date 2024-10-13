@@ -1,7 +1,6 @@
 maps = [1, 2, 3,
         4, 5, 6,
         7, 8, 9]
-
 # Победные комбинации
 victories = [[0, 1, 2],
              [3, 4, 5],
@@ -26,12 +25,15 @@ def step_maps(step, symbol):
 
 def get_result():
     win = ""
-    for i in victories:
-        if maps[i[0]] == "X" and maps[i[1]] == "X" and maps[i[2]] == "X":
-            win = "X"
-        if maps[i[0]] == "O" and maps[i[1]] == "O" and maps[i[2]] == "O":
-            win = "O"
-
+    if maps[0] == 1 or maps[1] == 2 or maps[2] == 3 or maps[3] == 4 or maps[4] == 5 or maps[5] == 6 or maps[6] == 7 or \
+            maps[7] == 8 or maps[8] == 9:
+        for i in victories:
+            if maps[i[0]] == "X" and maps[i[1]] == "X" and maps[i[2]] == "X":
+                win = "Победил Игрок X"
+            if maps[i[0]] == "O" and maps[i[1]] == "O" and maps[i[2]] == "O":
+                win = "Победил Игрок O"
+    else:
+        win="Ничья"
 
     return win
 
@@ -45,21 +47,44 @@ while game_over == False:
 
     # 2 делаем ход
     if player1 == True:
-        symbol = "X"
-        step = int(input("Игрок X, ваш ход: "))
+        step = input("Игрок X, ваш ход: ")
+        if step.isdigit():
+            step = int(step)
+            if 1 <= step <= 9:
+                if maps[step-1] != "O" and maps[step-1] != "X":
+                    symbol = "X"
+                    step_maps(step, symbol)
+                    player1 = not (player1)
+                else:
+                    print("ячейка занята")
+            else:
+                print("Вы ввели число вне диапазона,пожалуйста введите число от 1 до 9")
+        else:
+            print("Вы ввели не числовое значение, пожалуйста введите число от 1 до 9")
     else:
-        symbol = "O"
-        step = int(input("Игрок O, ваш ход: "))
+        step = input("Игрок O, ваш ход: ")
 
-    step_maps(step, symbol)  # делаем ход в указанную ячейку
+        if step.isdigit():
+            step = int(step)
+            if 1 <= step <= 9:
+                if maps[step-1] != "O" and maps[step-1] != "X":
+                    symbol = "O"
+                    step_maps(step, symbol)
+                    player1 = not (player1)
+                else:
+                    print("ячейка занята")
+            else:
+                print("Вы ввели число вне диапазона,пожалуйста введите число от 1 до 9")
+        else:
+            print("Вы ввели не числовое значение, пожалуйста введите число от 1 до 9")
+
     win = get_result()  # определим победителя
     if win != "":
         game_over = True
     else:
         game_over = False
 
-    player1 = not (player1)
 
 print_maps()
 
-print("Победил Игрок", win)
+print( win)
